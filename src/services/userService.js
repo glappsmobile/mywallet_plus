@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import * as userRepository from '../repositories/userRepository.js';
 
 const createUser = async ({ name, password, email }) => {
@@ -14,16 +15,15 @@ const createUser = async ({ name, password, email }) => {
 
 const signInUser = async ({ email, password }) => {
   const user = await userRepository.findUser({ email });
-
   if (!user || !bcrypt.compareSync(password, user.password)) {
     return null;
   }
 
   const token = jwt.sign({
-    id: user.rows[0].id
+    id: user.id
   }, process.env.JWT_SECRET);
 
-  res.send({
+  return ({
     token
   });
 

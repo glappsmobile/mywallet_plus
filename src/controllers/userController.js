@@ -32,10 +32,10 @@ const signIn = async (req, res) => {
     const token = await userService.signInUser({ email, password });
 
     if (token === null) {
-      return sendStatus(401);
+      return res.sendStatus(401);
     }
 
-    return res.send(token).status(200);
+    return res.send(token);
 
   } catch (err) {
     console.error(err);
