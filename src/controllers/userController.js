@@ -1,35 +1,24 @@
-import bcrypt from 'bcrypt';
-import connection from '../database.js';
+import * as userService from '../services/userService.js';
 
 const signUp = async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
+  const { name, email, password } = req.body;
 
-    if (!name || !email || !password) {
-      return res.sendStatus(400);
-    }
-
-    const existingUserWithGivenEmail = await connection.query(
-      `SELECT * FROM "users" WHERE "email"=$1`,
-      [email]
-    );
-
-    if (existingUserWithGivenEmail.rows[0]) {
-      return res.sendStatus(409);
-    }
-
-    const hashedPassword = bcrypt.hashSync(password, 12);
-
-    await connection.query(
-      `INSERT INTO "users" ("name", "email", "password") VALUES ($1, $2, $3)`,
-      [name, email, hashedPassword]
-    );
-
-    res.sendStatus(201);
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
+  if (!name || !email || !password) {
+    return res.sendStatus(400);
   }
+
+  const user = await userService.createUser({ name, email, password });
+
+  if (user === null) {
+    return res.sendStatus(409);
+  }
+
+  if (user.length === 0) {
+    return res.sendStatus(500);
+  }
+
+  return res.sendStatus(201);
+
 };
 
 export {
