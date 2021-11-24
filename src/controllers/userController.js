@@ -21,6 +21,29 @@ const signUp = async (req, res) => {
 
 };
 
+const signIn = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.sendStatus(400);
+    }
+
+    const token = await userService.signInUser({ email, password });
+
+    if (token === null) {
+      return sendStatus(401);
+    }
+
+    return res.send(token).status(200);
+
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+};
+
+
 export {
-  signUp,
+  signUp, signIn
 };
