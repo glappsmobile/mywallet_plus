@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 const auth = async (req, res, next) => {
   const authorization = req.headers.authorization || "";
   const token = authorization.split('Bearer ')[1];
@@ -10,13 +12,13 @@ const auth = async (req, res, next) => {
 
   try {
     user = jwt.verify(token, process.env.JWT_SECRET);
-  } catch {
+  } catch (err) {
     return res.sendStatus(401);
   }
 
   res.locals.user = user;
 
-  if (!session) {
+  if (!user) {
     res.sendStatus(401);
   } else {
     next();
