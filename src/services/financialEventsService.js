@@ -1,9 +1,14 @@
 import * as financialEventsRepository from '../repositories/financialEventsRepository.js';
 
-const createFinancialEvent = async ({ id, value, type }) => {
-  return await financialEventsRepository.createFinancialEventDB({ id, value, type });
+const createFinancialEvent = async ({ userId, value, type }) => {
+  return await financialEventsRepository.createFinancialEventDB({ userId, value, type });
+}
+
+const getFinancialEvents = async ({ userId }) => {
+  return await financialEventsRepository.getFinancialEventsDB({ userId });
 }
 
 export {
-  createFinancialEvent
+  createFinancialEvent,
+  getFinancialEvents
 }
