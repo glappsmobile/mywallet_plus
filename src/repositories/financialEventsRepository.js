@@ -28,5 +28,5 @@ const getFinancialEventsDB = async ({ userId }) => {
 
 export {
   createFinancialEventDB,
-  getFinancialEventsDB
+  getFinancialEventsDB,
 }

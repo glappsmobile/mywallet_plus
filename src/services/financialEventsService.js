@@ -10,5 +10,5 @@ const getFinancialEvents = async ({ userId }) => {
 
 export {
   createFinancialEvent,
-  getFinancialEvents
+  getFinancialEvents,
 }

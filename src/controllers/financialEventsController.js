@@ -40,7 +40,21 @@ const getFinancialEvents = async (req, res) => {
   return res.send(financialEvents);
 };
 
+const getFinancialEventsSum = async (req, res) => {
+  const { user } = res.locals;
+  const financialEvents = await financialEventsService.getFinancialEvents({ userId: user.id });
+
+  if (financialEvents === null) {
+    return res.sendStatus(500);
+  }
+
+  const sum = financialEvents.reduce((total, event) => event.type === 'INCOME' ? total + event.value : total - event.value, 0);
+
+  res.send({ sum });
+}
+
 export {
   createFinancialEvent,
-  getFinancialEvents
+  getFinancialEvents,
+  getFinancialEventsSum
 };
