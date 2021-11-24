@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import jwt from "jsonwebtoken";
 import connection from "./database.js";
+import auth from './middlewares/auth.js';
 import * as userController from "./controllers/userController.js";
 
 const app = express();
@@ -14,20 +15,6 @@ app.post("/sign-in", userController.signIn);
 
 app.post("/financial-events", async (req, res) => {
   try {
-    const authorization = req.headers.authorization || "";
-    const token = authorization.split('Bearer ')[1];
-
-    if (!token) {
-      return res.sendStatus(401);
-    }
-
-    let user;
-
-    try {
-      user = jwt.verify(token, process.env.JWT_SECRET);
-    } catch {
-      return res.sendStatus(401);
-    }
 
     const { value, type } = req.body;
 
